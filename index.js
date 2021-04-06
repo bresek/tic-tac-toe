@@ -9,11 +9,12 @@ console.log('script connected')
 
 //Gameboard object using module 
 const gameboard = (() => {
-    let board = ['x','x','o',
-                'o','x','o',
-                'o','o','x'];
+    const boardContain =  document.querySelector('#container')
+    let board = [' ','','',
+                '','','',
+                '',' ',' '];
     const render = () =>{
-       const boardContain =  document.querySelector('#container')
+       
        for (let i = 0; i < board.length; i++){
             const div = document.createElement('div')
             div.setAttribute('class','cell')
@@ -23,10 +24,20 @@ const gameboard = (() => {
        }
        
     }
-    return {board, render}
+    const getMove = (marker) =>{
+        console.log(marker)
+        boardContain.addEventListener('click', (event) => {
+            if (event.target.getAttribute("class") === 'cell'){
+                event.target.innerText = marker
+            }
+            
+
+
+        })
+    }
+    return {board, render, getMove}
 })()
 
-gameboard.render()
 
 
 //factory function for players 
@@ -38,12 +49,16 @@ const player = (name, symbol) => {
 }
 
 
-const ben = player('ben',"x")
-
 
 //module for tracking flow of the game 
 const flow = (() => {
     let move = 0;
     const nextTurn = () => ++move;
+    
     return {move, nextTurn}
 })()
+
+
+const ben = player('ben',"x")
+gameboard.render()
+gameboard.getMove(ben.getSymbol())

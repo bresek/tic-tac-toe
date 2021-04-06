@@ -14,5 +14,5 @@
 .cell{
     background-color: lightcyan;
      aspect-ratio: 1;
-     display: inline-block;
+    height: 3rem;
 }
