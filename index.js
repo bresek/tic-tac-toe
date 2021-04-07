@@ -7,9 +7,21 @@ console.log('script connected')
 
 
 
+
+//factory function for players 
+const player = (name, symbol) => {
+    const getName = () => name;
+    const getSymbol = () => symbol;
+
+    return {getName, getSymbol}
+}
+
+
 //Gameboard object using module 
 const gameboard = (() => {
+    //access board through dom 
     const boardContain =  document.querySelector('#container')
+    // initialize empty board 
     let board = [' ','','',
                 '','','',
                 '',' ',' '];
@@ -28,7 +40,9 @@ const gameboard = (() => {
         console.log(marker)
         boardContain.addEventListener('click', (event) => {
             if (event.target.getAttribute("class") === 'cell'){
+                
                 event.target.innerText = marker
+                console.log(flow.move)
             }
             
 
@@ -40,25 +54,37 @@ const gameboard = (() => {
 
 
 
-//factory function for players 
-const player = (name, symbol) => {
-    const getName = () => name;
-    const getSymbol = () => symbol;
-
-    return {getName, getSymbol}
-}
 
 
 
 //module for tracking flow of the game 
 const flow = (() => {
+   
     let move = 0;
-    const nextTurn = () => ++move;
+    let gameOver = false
+    //initialize players. Not sure if it should go in here. 
+    const player1 = player('1', '❌');
+    const player2 = player('2','🅾️');
+    const nextTurn = () => {
+        move++;
+        console.log('next turn, move: '+ move)
+        
+    }
+    const play = () =>{
+        gameboard.render()
+        if (move % 2 === 0){
+            gameboard.getMove(player1.getSymbol())
+
+        }else{
+            gameboard.getMove(player2.getSymbol())
+        }
+        nextTurn();
+        
+      
+    }
+
     
-    return {move, nextTurn}
+    return {move, nextTurn ,play}
 })()
 
-
-const ben = player('ben',"x")
-gameboard.render()
-gameboard.getMove(ben.getSymbol())
+flow.play()
