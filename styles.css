@@ -1,5 +1,6 @@
 
 
+
 #container{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -11,8 +12,12 @@
     background-color: darkgoldenrod;
 }
 
-.cell{
+body, .cell{
     background-color: lightcyan;
+}
+
+.cell{
+  
      aspect-ratio: 1;
     height: 3rem;
 }
