@@ -52,11 +52,11 @@ const gameboard = (() => {
         ] = marker;
         console.log(flow.move);
         //check for for win
-         console.log(flow.checkForWin(gameboard.board));
-        if (flow.checkForWin(gameboard.board) === true){
-            flow.winTime()
+        console.log(flow.checkForWin(gameboard.board));
+        if (flow.checkForWin(gameboard.board) === true) {
+          flow.winTime();
         }
-       //next turn of the game
+        //next turn of the game
         flow.nextTurn();
       }
     });
@@ -69,8 +69,8 @@ const flow = (() => {
   //initialize players. Not sure if it should go in here.
   let move = 0;
   let gameOver = false;
-  const player1 = player("1", "❌");
-  const player2 = player("2", "🅾️");
+  const player1 = player("1", "x");
+  const player2 = player("2", "o");
 
   const nextTurn = () => {
     if (move < 8) {
@@ -81,6 +81,7 @@ const flow = (() => {
     }
   };
   const startGame = () => {
+    //TODO: get player names 
     gameboard.render();
     if (!gameOver) {
       determineTurn();
@@ -121,24 +122,37 @@ const flow = (() => {
         return true;
       }
     }
-    //check diagonals for win 
+    //check diagonals for win
+    if(
+        moves[0][0] != '' &&
+        moves[0][0] == moves[1][1] &&
+        moves[1][1] == moves[2][2] 
+    ){
+        return true;
+    }
+    if(
+        moves[0][2] != '' &&
+        moves[0][2] == moves[1][1] &&
+        moves[1][1] == moves[2][0]
+    ){
+        return true;
+    }
 
+    //no winning condition met
     return false;
   };
   // function that does something when someone wins
-  const winTime = () =>{
-      let winner = ''
-      if (move % 2 == 0){
-           winner = player1.getName()
-      }else{
-           winner = player2.getName()
-      }
-      alert("Winner is: "+ winner+"!")
-  }
-
+  const winTime = () => {
+    let winner = "";
+    if (move % 2 == 0) {
+      winner = player1.getName();
+    } else {
+      winner = player2.getName();
+    }
+    alert("Winner is: " + winner + "!");
+  };
 
   return { move, nextTurn, determineTurn, startGame, checkForWin, winTime };
 })();
 
 flow.startGame();
-

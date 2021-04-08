@@ -9,15 +9,27 @@
     text-align: center;
     margin: auto;
     grid-gap: 5px;
-    background-color: darkgoldenrod;
+    background-color: #BDD4E7;
+}
+h1{
+    font-size: 8rem;
+    color:  #BDD4E7;
+    font-family: 'Nanum Pen Script', cursive;
 }
 
 body, .cell{
-    background-color: lightcyan;
+    background-color: #637074;
+    font-family: 'Nanum Pen Script', cursive;
+    text-align: center;
+
 }
 
 .cell{
-  
-     aspect-ratio: 1;
-    height: 3rem;
+    font-family: 'Nanum Pen Script', cursive;
+    /* font-family: 'Rock Salt', cursive; */
+    font-size: 5rem;
+    color: #BDD4E7;
+    
+    height: 6rem;
+    
 }
