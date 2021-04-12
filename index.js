@@ -33,6 +33,7 @@ const gameboard = (() => {
         boardContain.appendChild(div);
       }
     }
+    flow.createDisplay()
   };
   const placeSymbol = () => {
     boardContain.addEventListener("click", (event) => {
@@ -55,13 +56,15 @@ const gameboard = (() => {
         console.log(flow.checkForWin(gameboard.board));
         if (flow.checkForWin(gameboard.board) === true) {
           flow.winTime();
+        }else{
+          flow.nextTurn();
         }
         //next turn of the game
-        flow.nextTurn();
+        
       }
     });
   };
-  return { board, render, placeSymbol };
+  return { board, render, placeSymbol, boardContain };
 })();
 
 //module for tracking flow of the game
@@ -69,32 +72,50 @@ const flow = (() => {
   //initialize players. Not sure if it should go in here.
   let move = 0;
   let gameOver = false;
-  const player1 = player("1", "x");
-  const player2 = player("2", "o");
+  //TODO: get player names
+  p1name = prompt("Enter player 1's name: ");
+  p2name = prompt("Enter player 2's name: ");
+  const player1 = player(p1name, "x");
+  const player2 = player(p2name, "o");
+
+  const createDisplay = () =>{
+    const display = document.querySelector("#display");
+    const h3 = document.createElement("h3");
+    display.appendChild(h3);
+  }
 
   const nextTurn = () => {
     if (move < 8) {
       move++;
       console.log("next turn, move: " + move);
     } else {
+      const h3 = document.querySelector("h3");
+      h3.innerText = "Tie game!"
       alert("game over- tie!");
     }
   };
   const startGame = () => {
-    //TODO: get player names 
     gameboard.render();
     if (!gameOver) {
       determineTurn();
       gameboard.placeSymbol();
     }
+    return { player1, player2 };
   };
   const determineTurn = () => {
     let symbol = "";
-    if (move % 2 === 0) {
+    
+     if (move % 2 === 0) {
       symbol = player1.getSymbol();
+     
     } else {
       symbol = player2.getSymbol();
+      
     }
+    //the following is repetitive with the code in determine winner but I'cant workout how to make it less redundunt.
+   
+  
+   
     return symbol;
   };
   const checkForWin = (moves) => {
@@ -123,19 +144,19 @@ const flow = (() => {
       }
     }
     //check diagonals for win
-    if(
-        moves[0][0] != '' &&
-        moves[0][0] == moves[1][1] &&
-        moves[1][1] == moves[2][2] 
-    ){
-        return true;
+    if (
+      moves[0][0] != "" &&
+      moves[0][0] == moves[1][1] &&
+      moves[1][1] == moves[2][2]
+    ) {
+      return true;
     }
-    if(
-        moves[0][2] != '' &&
-        moves[0][2] == moves[1][1] &&
-        moves[1][1] == moves[2][0]
-    ){
-        return true;
+    if (
+      moves[0][2] != "" &&
+      moves[0][2] == moves[1][1] &&
+      moves[1][1] == moves[2][0]
+    ) {
+      return true;
     }
 
     //no winning condition met
@@ -149,10 +170,20 @@ const flow = (() => {
     } else {
       winner = player2.getName();
     }
-    alert("Winner is: " + winner + "!");
+    const h3 = document.querySelector("h3");
+    h3.innerHTML = "Winner: " + winner + "!";
+  
   };
 
-  return { move, nextTurn, determineTurn, startGame, checkForWin, winTime };
+  return {
+    move,
+    nextTurn,
+    determineTurn,
+    startGame,
+    checkForWin,
+    winTime,
+    createDisplay,
+  };
 })();
 
 flow.startGame();
